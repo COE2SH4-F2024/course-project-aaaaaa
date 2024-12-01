@@ -43,10 +43,16 @@ void Player::updatePlayerDir()
         default:
             break;
     }         
+    
 }
 
 void Player::movePlayer()
 {
+
+    if (mainGameMechsRef->getLoseFlagStatus()) {
+        myDir = STOP;
+        return;
+    }
     int board_x = mainGameMechsRef->getBoardSizeX();
     int board_y = mainGameMechsRef->getBoardSizeY();
 
@@ -79,7 +85,7 @@ void Player::movePlayer()
     } else if(y <= 0) {
         y = board_y -1;
     }
-    
+    playerPos.setObjPos(x, y, playerPos.getObjPos().symbol);
 }
 
 // More methods to be added

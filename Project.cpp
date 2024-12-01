@@ -51,14 +51,14 @@ void Initialize(void)
 
 void GetInput(void)
 {
-   char input = MacUILib_getChar();
-    gamemechs->setInput(input); 
+    gamemechs->collectAsyncInput(); 
 }
 
 void RunLogic(void)
 {
 
-    
+    snake->updatePlayerDir(); // Update the player direction based on input
+    snake->movePlayer();
     char input = gamemechs->getInput();
 
 
@@ -111,11 +111,13 @@ void DrawScreen(void)
     }
 
     
-    MacUILib_printf("Score: %d\n", gamemechs->getScore());
+    //MacUILib_printf("Score: %d\n", gamemechs->getScore());
 
     
     if (gamemechs->getLoseFlagStatus()) {
         MacUILib_printf("Game Over! You lost.\n");
+        
+        
     } else if (gamemechs->getExitFlagStatus()) {
         MacUILib_printf("Exited the game\n");
     }
