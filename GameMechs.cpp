@@ -1,6 +1,6 @@
 #include "GameMechs.h"
 
-GameMechs* gameMechs = nullptr;
+
 
 GameMechs::GameMechs()
 
