@@ -8,7 +8,7 @@ using namespace std;
 
 #define DELAY_CONST 100000
 
-bool exitFlag; // delete this
+
 Player* snake;
 GameMechs* gamemechs;
 
@@ -26,7 +26,7 @@ int main(void)
 
     Initialize();
 
-    while(exitFlag == false)  
+    while(gamemechs->getExitFlagStatus() == false)  
     {
         GetInput();
         RunLogic();
@@ -46,17 +46,47 @@ void Initialize(void)
 
     gamemechs = new GameMechs();
     snake = new Player(gamemechs);
-    exitFlag = false;
+    //exitFlag = false;
 }
 
 void GetInput(void)
 {
-   
+   char input = MacUILib_getChar();
+    gamemechs->setInput(input); 
 }
 
 void RunLogic(void)
 {
+
     
+    char input = gamemechs->getInput();
+
+
+    
+    switch (input) {
+        // Game Exit
+        case 'q': 
+            gamemechs->setExitTrue();
+            break;
+        // Game lost
+        case 'l': 
+            gamemechs->setLoseFlag();
+            break;
+        // Debug key for ending game
+        case 'p':
+            gamemechs->setLoseFlag();
+            break;
+        // Increment score with debug key
+        case 'o':
+            gamemechs->incrementScore();
+            break;
+        default:
+            
+            break;
+}
+if (!gamemechs->getLoseFlagStatus()) {
+        gamemechs->incrementScore(); // Increment score for a valid action
+    }
 }
 
 void DrawScreen(void)
@@ -78,6 +108,16 @@ void DrawScreen(void)
             
         }
         MacUILib_printf("\n");
+    }
+
+    
+    MacUILib_printf("Score: %d\n", gamemechs->getScore());
+
+    
+    if (gamemechs->getLoseFlagStatus()) {
+        MacUILib_printf("Game Over! You lost.\n");
+    } else if (gamemechs->getExitFlagStatus()) {
+        MacUILib_printf("Exited the game\n");
     }
 }
 
