@@ -29,6 +29,8 @@ class Player
     private:
         objPos playerPos; // Upgrade this in iteration 3.       
         enum Dir myDir;
+        int board_x;
+        int board_y;
 
         // Need a reference to the Main Game Mechanisms
         GameMechs* mainGameMechsRef;

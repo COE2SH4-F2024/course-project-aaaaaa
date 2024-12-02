@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "MacUILib.h"
 
 
 Player::Player(GameMechs* thisGMRef)
@@ -6,8 +7,8 @@ Player::Player(GameMechs* thisGMRef)
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
 
-    int board_x = mainGameMechsRef->getBoardSizeX();
-    int board_y = mainGameMechsRef->getBoardSizeY();
+    board_x = mainGameMechsRef->getBoardSizeX();
+    board_y = mainGameMechsRef->getBoardSizeY();
 
     playerPos.setObjPos(board_x*0.5, board_y*0.5, '*');
 
@@ -29,21 +30,45 @@ void Player::updatePlayerDir()
     char input = mainGameMechsRef->getInput();
     switch(input) { 
         case 'w':
-            if(myDir != DOWN) myDir = UP;
+            if(myDir != DOWN) {
+                myDir = UP;
+            }
             break;
         case 'a':
-            if(myDir != RIGHT) myDir = LEFT;
+            if(myDir != RIGHT) {
+                myDir = LEFT;
+            }
             break;
         case 's':
-            if(myDir != UP) myDir = DOWN;
+            if(myDir != UP) {
+                myDir = DOWN;
+            }
             break;
         case 'd':
-            if(myDir != LEFT) myDir = RIGHT;
+            if(myDir != LEFT) {
+                myDir = RIGHT;
+            }
+            break;
+        // Game Exit
+        case 'q': 
+            mainGameMechsRef->setExitTrue();
+            break;
+        // Game lost
+        case 'l': 
+            mainGameMechsRef->setLoseFlag();
+            break;
+        // Debug key for ending game
+        case 'p':
+            mainGameMechsRef->setLoseFlag();
+            break;
+        // Increment score with debug key
+        case 'o':
+            mainGameMechsRef->incrementScore();
             break;
         default:
             break;
     }         
-    
+    mainGameMechsRef->clearInput();
 }
 
 void Player::movePlayer()
@@ -75,6 +100,7 @@ void Player::movePlayer()
         default:
             break;
     }
+
     if(x >= board_x) {
         x = 1;
     } else if(x <= 0) {

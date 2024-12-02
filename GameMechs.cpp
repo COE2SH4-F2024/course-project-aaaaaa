@@ -97,4 +97,5 @@ void GameMechs::clearInput()
     input = '\0';
 }
 
+
 // More methods should be added here
