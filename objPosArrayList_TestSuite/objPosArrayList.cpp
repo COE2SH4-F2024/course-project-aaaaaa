@@ -1,5 +1,5 @@
 #include "objPosArrayList.h"
-#include <stdexcept>
+
 // Check lecture contents on general purpose array list construction, 
 // and modify it to support objPos array list construction.
 
@@ -25,13 +25,16 @@ int objPosArrayList::getSize() const
 void objPosArrayList::insertHead(objPos thisPos)
 {
     if (listSize >= arrayCapacity) {
-            throw std::overflow_error("Array is full");
-        }
+            return;
+    } else {
         for (int i = listSize; i > 0; i--) {
-            aList[i] = aList[i - 1]; // Shift elements
-        }
+            aList[i] = aList[i - 1]; 
+        
+    }
         aList[0] = thisPos;
         listSize++;
+    }
+        
 
    
 }
@@ -39,19 +42,20 @@ void objPosArrayList::insertHead(objPos thisPos)
 void objPosArrayList::insertTail(objPos thisPos)
 {
     if (listSize >= arrayCapacity) {
-            throw std::overflow_error("Array is full");
+            return;
+        } else {
+            aList[listSize+1] = thisPos;
         }
-        aList[listSize] = thisPos; // Insert at the end
-        listSize++;
+       
 }
 
 void objPosArrayList::removeHead()
 {
     if (listSize == 0) {
-            throw std::underflow_error("Array is empty");
+            return;
         }
         for (int i = 0; i < listSize - 1; i++) {
-            aList[i] = aList[i + 1]; // Shift elements
+            aList[i] = aList[i + 1]; 
         }
         listSize--;
 }
@@ -59,33 +63,32 @@ void objPosArrayList::removeHead()
 void objPosArrayList::removeTail()
 {
      if (listSize == 0) {
-            throw std::underflow_error("Array is empty");
+            return;
         }
-        listSize--; // Simply decrease listSize
+        listSize--; 
 
 }
 
 objPos objPosArrayList::getHeadElement() const
 {
- if (listSize == 0) {
-            throw std::underflow_error("Array is empty");
-        }
         return aList[0];
 }
 
 objPos objPosArrayList::getTailElement() const
 {
-   if (listSize == 0) {
-            throw std::underflow_error("Array is empty");
-        }
+   
         return aList[listSize - 1];
 
 }
 
 objPos objPosArrayList::getElement(int index) const
 {
-    if (index < 0 || index >= listSize) {
-            throw std::out_of_range("Index is out of range");
-        }
-        return aList[index];
+    if (index >= arrayCapacity) {
+        return aList[arrayCapacity-1];
+    }
+
+    if (index < 0) {
+        return aList[0];
+    }
+    return aList[index];
 }
