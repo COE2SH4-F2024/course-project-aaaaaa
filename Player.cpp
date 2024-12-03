@@ -1,28 +1,32 @@
 #include "Player.h"
-#include "MacUILib.h"
 
 
-Player::Player(GameMechs* thisGMRef)
+Player::Player(GameMechs* thisGMRef, int startsize)
 {
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
 
+    playerPosList = new objPosArrayList();
+
     board_x = mainGameMechsRef->getBoardSizeX();
     board_y = mainGameMechsRef->getBoardSizeY();
 
-    playerPos.setObjPos(board_x*0.5, board_y*0.5, '*');
+    playerPosList->insertHead(objPos(board_x*0.5, board_y*0.5, '*'));
+    for(int i = 1; i <= startsize; i++) {
+        playerPosList->insertTail(objPos((board_x*0.5)-i, (board_y*0.5), '*'));
+    }
 
 }
 
 
 Player::~Player()
 {
-    // :3
+    delete[] playerPosList;
 }
 
-objPos Player::getPlayerPos() const
+objPosArrayList* Player::getPlayerPos() const
 {
-    return playerPos.getObjPos();
+    return playerPosList;
 }
 
 void Player::updatePlayerDir()
@@ -81,8 +85,8 @@ void Player::movePlayer()
     int board_x = mainGameMechsRef->getBoardSizeX();
     int board_y = mainGameMechsRef->getBoardSizeY();
 
-    int x = playerPos.pos->x;
-    int y = playerPos.pos->y;
+    int x = playerPosList->getHeadElement().pos->x;
+    int y = playerPosList->getHeadElement().pos->y;
     switch(myDir) {
         case LEFT:
             x--;
@@ -111,7 +115,13 @@ void Player::movePlayer()
     } else if(y <= 0) {
         y = board_y -1;
     }
-    playerPos.setObjPos(x, y, playerPos.getObjPos().symbol);
-}
+    if(myDir != STOP) {
+        head = playerPosList->getHeadElement();
+        head.pos->x = x;
+        head.pos->y = y;
+        playerPosList->insertHead(objPos(x, y, '*'));
+        playerPosList->removeTail();
+    }
+    }
 
 // More methods to be added

@@ -1,7 +1,5 @@
 #include "Food.h"
-#include "GameMechs.h"
-#include "Player.h"
-#include "objPos.h"
+
 
 Food::Food(int board_x, int board_y, GameMechs* gameMechRef) 
 {
@@ -14,26 +12,25 @@ Food::~Food()
 
 }
 
-void Food::generateFood(const objPos& blockOff)
+void Food::generateFood(const objPosArrayList& blockOff, GameMechs* gameMechRef)
 {
-    Player* playerRef;
-    GameMechs* gameMechRef;
-
     int rand_x = 0;
     int rand_y = 0;
     bool canGenerate = false;
     while(!canGenerate) {
         rand_x = rand()%boardsize_x+1;
         rand_y = rand()%boardsize_y+1;
-        if(blockOff.pos->x == getFoodPos().pos->x && blockOff.pos->y == getFoodPos().pos->y) {
-            canGenerate = false;
-            break;
-        } 
         canGenerate = true;
+        for(int i = 0; i < blockOff.getSize(); i++) {
+            if(blockOff.getElement(i).pos->x == rand_x && blockOff.getElement(i).pos->y == rand_y) {
+                canGenerate = false;
+                break;
+            } 
+        }
     }
 
     foodPos.setObjPos(rand_x, rand_y, 'o');
-}
+} 
 
 objPos Food::getFoodPos()
 {

@@ -8,8 +8,6 @@ objPosArrayList::objPosArrayList()
    listSize = 0;
    arrayCapacity = ARRAY_MAX_CAP;
    aList = new objPos[arrayCapacity];
-
-
 }
 
 objPosArrayList::~objPosArrayList()
@@ -33,20 +31,16 @@ void objPosArrayList::insertHead(objPos thisPos)
     }
         aList[0] = thisPos;
         listSize++;
-    }
-        
-
-   
+    } 
 }
 
 void objPosArrayList::insertTail(objPos thisPos)
 {
     if (listSize >= arrayCapacity) {
-            return;
-        } else {
-            aList[listSize+1] = thisPos;
-        }
-       
+        return;
+    }
+    aList[listSize] = thisPos;
+    listSize++;     
 }
 
 void objPosArrayList::removeHead()

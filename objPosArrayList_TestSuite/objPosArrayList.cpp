@@ -25,12 +25,11 @@ int objPosArrayList::getSize() const
 void objPosArrayList::insertHead(objPos thisPos)
 {
     if (listSize >= arrayCapacity) {
-            return;
+        return;
     } else {
         for (int i = listSize; i > 0; i--) {
-            aList[i] = aList[i - 1]; 
-        
-    }
+            aList[i] = aList[i - 1];  
+        }
         aList[0] = thisPos;
         listSize++;
     }
@@ -42,11 +41,10 @@ void objPosArrayList::insertHead(objPos thisPos)
 void objPosArrayList::insertTail(objPos thisPos)
 {
     if (listSize >= arrayCapacity) {
-            return;
-        } else {
-            aList[listSize+1] = thisPos;
-        }
-       
+        return;
+    }
+    aList[listSize] = thisPos;
+    listSize++;     
 }
 
 void objPosArrayList::removeHead()
