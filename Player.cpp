@@ -1,20 +1,18 @@
 #include "Player.h"
 
 
-Player::Player(GameMechs* thisGMRef, int startsize)
+Player::Player(GameMechs* thisGMRef, Food* food)
 {
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
 
     playerPosList = new objPosArrayList();
-
+    
+    mainFood = food;
     board_x = mainGameMechsRef->getBoardSizeX();
     board_y = mainGameMechsRef->getBoardSizeY();
 
     playerPosList->insertHead(objPos(board_x*0.5, board_y*0.5, '*'));
-    for(int i = 1; i <= startsize; i++) {
-        playerPosList->insertTail(objPos((board_x*0.5)-i, (board_y*0.5), '*'));
-    }
 
 }
 
@@ -77,7 +75,6 @@ void Player::updatePlayerDir()
 
 void Player::movePlayer()
 {
-
     if (mainGameMechsRef->getLoseFlagStatus()) {
         myDir = STOP;
         return;
@@ -104,6 +101,7 @@ void Player::movePlayer()
         default:
             break;
     }
+    //checkSelfCollision();
 
     if(x >= board_x) {
         x = 1;
@@ -115,13 +113,47 @@ void Player::movePlayer()
     } else if(y <= 0) {
         y = board_y -1;
     }
-    if(myDir != STOP) {
-        head = playerPosList->getHeadElement();
-        head.pos->x = x;
-        head.pos->y = y;
+
+    bool foodEaten = false;
+
+    if(foodEaten == false) {
         playerPosList->insertHead(objPos(x, y, '*'));
         playerPosList->removeTail();
     }
-    }
 
+    if(x == mainFood->getFoodPos().pos->x && y == mainFood->getFoodPos().pos->y) {
+        foodEaten = true;
+        playerPosList->insertHead(objPos(x, y, '*'));
+        mainFood->generateFood(*playerPosList, mainGameMechsRef);
+        mainGameMechsRef->incrementScore();
+    }       
+
+
+    // Food* mainFood;
+    // objPos foodPos = mainFood->getFoodPos();
+    // bool foodEaten = (x == foodPos.pos->x && y == foodPos.pos->y);
+    // if(foodEaten) {
+    //     playerPosList->insertTail(head);
+    //     mainFood->generateFood(*playerPosList,mainGameMechsRef);
+    //     mainGameMechsRef->incrementScore();
+    // } else {
+    //     playerPosList->insertHead(head);
+    //     playerPosList->removeTail();
+    // }
+
+    
+}
+
+// void Player::checkSelfCollision() 
+// {
+//     bool died = false;
+//     for(int i = 1; i < playerPosList->getSize(); i++) {
+//         if(playerPosList->getHeadElement().pos->x == playerPosList->getElement(i).pos->x && playerPosList->getHeadElement().pos->y == playerPosList->getElement(i).pos->y) {
+//             died = true;
+//             mainGameMechsRef->setExitTrue();
+//             mainGameMechsRef->setLoseFlag();
+//             break;
+//         }
+//     }
+// } 
 // More methods to be added

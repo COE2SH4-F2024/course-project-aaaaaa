@@ -47,8 +47,8 @@ void Initialize(void)
     MacUILib_clearScreen();
 
     gamemechs = new GameMechs();
-    snake = new Player(gamemechs, 1);
     food = new Food(gamemechs->getBoardSizeX(), gamemechs->getBoardSizeY(), gamemechs);
+    snake = new Player(gamemechs, food);
     //exitFlag = false;
     food->generateFood(*snake->getPlayerPos(), gamemechs);
 }
