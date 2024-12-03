@@ -4,7 +4,6 @@
 #include "objPos.h"
 #include "objPosArrayList.h"
 #include "GameMechs.h"
-#include "Player.h"
 #include <time.h>
 
 class Food

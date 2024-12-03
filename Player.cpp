@@ -5,7 +5,7 @@ Player::Player(GameMechs* thisGMRef, Food* food)
 {
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
-
+    mainFood = food;
     playerPosList = new objPosArrayList();
     
     mainFood = food;
