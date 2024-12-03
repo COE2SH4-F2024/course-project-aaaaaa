@@ -9,7 +9,7 @@ Section: C01
 
 Team Information
 Member 1 MacID: [Zhuk50]
-Member 1 StudentID: [Insert your numerical student ID here]
+Member 1 StudentID: [400493240]
 
 Member 2 MacID: [Khans294]
 Member 2 StudentID: [400324929]
