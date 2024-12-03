@@ -4,7 +4,7 @@
 Player::Player(GameMechs* thisGMRef, Food* food)
 {
     mainGameMechsRef = thisGMRef;
-    myDir = STOP;
+    myDir = STOP; // begins at stop position
     mainFood = food;
     playerPosList = new objPosArrayList();
     
@@ -30,7 +30,7 @@ objPosArrayList* Player::getPlayerPos() const
 void Player::updatePlayerDir()
 {
     char input = mainGameMechsRef->getInput();
-    switch(input) { 
+    switch(input) { // as long as the player is NOT moving in the opposite direction, it can turn 
         case 'w':
             if(myDir != DOWN) {
                 myDir = UP;
@@ -70,12 +70,12 @@ void Player::updatePlayerDir()
         default:
             break;
     }         
-    mainGameMechsRef->clearInput();
+    mainGameMechsRef->clearInput(); 
 }
 
 void Player::movePlayer()
 {
-    if (mainGameMechsRef->getLoseFlagStatus()) {
+    if (mainGameMechsRef->getLoseFlagStatus()) { // stops the game if lose flag becomes true (if you lost)
         myDir = STOP;
         return;
     }
@@ -84,7 +84,7 @@ void Player::movePlayer()
 
     int x = playerPosList->getHeadElement().pos->x;
     int y = playerPosList->getHeadElement().pos->y;
-    switch(myDir) {
+    switch(myDir) { // changing coordinates of the snake head depending on which direction it is moving
         case LEFT:
             x--;
             break;
@@ -103,7 +103,7 @@ void Player::movePlayer()
     }
     
 
-    if(x >= board_x -1) {
+    if(x >= board_x -1) { // wraparound logic
         x = 1;
     } else if(x <= 0) {
         x = board_x -1;
@@ -115,13 +115,13 @@ void Player::movePlayer()
     }
 
     bool foodEaten = false;
-    checkSelfCollision(x, y);
+    checkSelfCollision(x, y); // checks the new x and y position to see if a part of the snake body already exists at those coordinates
     if(foodEaten == false) {
         playerPosList->insertHead(objPos(x, y, '*'));
         playerPosList->removeTail();
     }
 
-    if(x == mainFood->getFoodPos().pos->x && y == mainFood->getFoodPos().pos->y) {
+    if(x == mainFood->getFoodPos().pos->x && y == mainFood->getFoodPos().pos->y) { // checks if food is eaten; does not remove tail if it is
         foodEaten = true;
         playerPosList->insertHead(objPos(x, y, '*'));
         mainFood->generateFood(*playerPosList, mainGameMechsRef);
@@ -139,14 +139,5 @@ void Player::checkSelfCollision(int x, int y)
             break;
         }
     }
-
-    // for(int i = 1; i < playerPosList->getSize(); i++) {
-    //     if(playerPosList->getHeadElement().pos->x == playerPosList->getElement(i).pos->x && playerPosList->getHeadElement().pos->y == playerPosList->getElement(i).pos->y) {
-    //         died = true;
-    //         mainGameMechsRef->setExitTrue();
-    //         mainGameMechsRef->setLoseFlag();
-    //         break;
-    //     }
-    // }
 } 
 // More methods to be added

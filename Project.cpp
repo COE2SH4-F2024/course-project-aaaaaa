@@ -49,7 +49,6 @@ void Initialize(void)
     gamemechs = new GameMechs();
     food = new Food(gamemechs->getBoardSizeX(), gamemechs->getBoardSizeY(), gamemechs);
     snake = new Player(gamemechs, food);
-    //exitFlag = false;
     food->generateFood(*snake->getPlayerPos(), gamemechs);
 }
 
@@ -63,7 +62,7 @@ void RunLogic(void)
 
     snake->updatePlayerDir(); // Update the player direction based on input
     snake->movePlayer();
-    // moved logic to player.cpp
+    // moved debugging logic to player.cpp
 }
 
 void DrawScreen(void)
@@ -74,27 +73,27 @@ void DrawScreen(void)
     int board_y = gamemechs->getBoardSizeY();
     int food_x = food->getFoodPos().pos->x;
     int food_y = food->getFoodPos().pos->y;
-    objPosArrayList* playerpos = snake->getPlayerPos();
+    objPosArrayList* playerpos = snake->getPlayerPos(); // to get the position of each element of the snake
 
     char variable;
     for(int y = 0; y < board_y; y++) {
         for(int x = 0; x < board_x; x++) {
             if(x == 0 || x == board_x -1 || y == 0 || y == board_y -1) {
-                MacUILib_printf("#");
+                MacUILib_printf("#"); // if on edge, add # for game board
             } else if(x == food_x && y == food_y) {
-                MacUILib_printf("o");
+                MacUILib_printf("o"); // if food generates there, add a 'o'
             } else {
                 bool isplayer = false;
-                for(int i = 0; i < playerpos->getSize(); i++) {
+                for(int i = 0; i < playerpos->getSize(); i++) { // checking if player is taking up that space in the game board
                     objPos player_pos = playerpos->getElement(i);
                     if(y == player_pos.pos->y && x == player_pos.pos->x) {
                         MacUILib_printf("%c", player_pos.getSymbol());
-                        isplayer = true;
+                        isplayer = true; 
                         break;
                     }
                 }
-                if(!isplayer) {
-                    MacUILib_printf(" ");
+                if(!isplayer) { // printing a space if there is not a player
+                    MacUILib_printf(" "); 
                 }
             }      
         }
