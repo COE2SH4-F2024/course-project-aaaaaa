@@ -24,10 +24,10 @@ GameMechs::GameMechs(int boardX, int boardY)
     boardSizeY = boardY;
 }
 
-// do you need a destructor?
+
 GameMechs::~GameMechs()
 {
-    
+    // no destructor needed, nothing new is made
 }
 
 bool GameMechs::getExitFlagStatus() const
@@ -45,7 +45,7 @@ void GameMechs::collectAsyncInput() {
         input = MacUILib_getChar();
     }
 
-    if (input == '\e') {
+    if (input == '\e') { //if esc key is pressed
         setExitTrue();
     }
 }

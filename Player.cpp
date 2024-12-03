@@ -101,21 +101,21 @@ void Player::movePlayer()
         default:
             break;
     }
-    //checkSelfCollision();
+    
 
-    if(x >= board_x) {
+    if(x >= board_x -1) {
         x = 1;
     } else if(x <= 0) {
         x = board_x -1;
     }
-    if(y >= board_y) {
+    if(y >= board_y -1) {
         y = 1;
     } else if(y <= 0) {
         y = board_y -1;
     }
 
     bool foodEaten = false;
-
+    checkSelfCollision(x, y);
     if(foodEaten == false) {
         playerPosList->insertHead(objPos(x, y, '*'));
         playerPosList->removeTail();
@@ -127,33 +127,26 @@ void Player::movePlayer()
         mainFood->generateFood(*playerPosList, mainGameMechsRef);
         mainGameMechsRef->incrementScore();
     }       
-
-
-    // Food* mainFood;
-    // objPos foodPos = mainFood->getFoodPos();
-    // bool foodEaten = (x == foodPos.pos->x && y == foodPos.pos->y);
-    // if(foodEaten) {
-    //     playerPosList->insertTail(head);
-    //     mainFood->generateFood(*playerPosList,mainGameMechsRef);
-    //     mainGameMechsRef->incrementScore();
-    // } else {
-    //     playerPosList->insertHead(head);
-    //     playerPosList->removeTail();
-    // }
-
     
 }
 
-// void Player::checkSelfCollision() 
-// {
-//     bool died = false;
-//     for(int i = 1; i < playerPosList->getSize(); i++) {
-//         if(playerPosList->getHeadElement().pos->x == playerPosList->getElement(i).pos->x && playerPosList->getHeadElement().pos->y == playerPosList->getElement(i).pos->y) {
-//             died = true;
-//             mainGameMechsRef->setExitTrue();
-//             mainGameMechsRef->setLoseFlag();
-//             break;
-//         }
-//     }
-// } 
+void Player::checkSelfCollision(int x, int y) 
+{
+    for(int i = 1; i < playerPosList->getSize(); i++) {
+        if(x == playerPosList->getElement(i).getObjPos().pos->x && y == playerPosList->getElement(i).getObjPos().pos->y) {
+            mainGameMechsRef->setExitTrue();
+            mainGameMechsRef->setLoseFlag();
+            break;
+        }
+    }
+
+    // for(int i = 1; i < playerPosList->getSize(); i++) {
+    //     if(playerPosList->getHeadElement().pos->x == playerPosList->getElement(i).pos->x && playerPosList->getHeadElement().pos->y == playerPosList->getElement(i).pos->y) {
+    //         died = true;
+    //         mainGameMechsRef->setExitTrue();
+    //         mainGameMechsRef->setLoseFlag();
+    //         break;
+    //     }
+    // }
+} 
 // More methods to be added

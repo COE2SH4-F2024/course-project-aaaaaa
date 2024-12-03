@@ -68,7 +68,8 @@ void RunLogic(void)
 
 void DrawScreen(void)
 {
-    MacUILib_clearScreen();   
+    MacUILib_clearScreen();  
+    MacUILib_printf("Score: %d\n", gamemechs->getScore()); 
     int board_x = gamemechs->getBoardSizeX();
     int board_y = gamemechs->getBoardSizeY();
     int food_x = food->getFoodPos().pos->x;
@@ -99,18 +100,7 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");
     }
-
     
-    MacUILib_printf("Score: %d\n", gamemechs->getScore());
-
-    
-    if (gamemechs->getLoseFlagStatus()) {
-        MacUILib_printf("Game Over! You lost.\n");
-        
-        
-    } else if (gamemechs->getExitFlagStatus()) {
-        MacUILib_printf("Exited the game\n");
-    } 
 }
 
 void LoopDelay(void)
@@ -122,6 +112,12 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();  
+    if (gamemechs->getLoseFlagStatus()) {
+        MacUILib_printf("Game Over! You lost.\n");
+    } else if (gamemechs->getExitFlagStatus()) {
+        MacUILib_printf("Exited the game\n");
+    } 
+    MacUILib_printf("Final Score: %d", gamemechs->getScore());
     delete gamemechs;
     delete snake;  
     delete food;
